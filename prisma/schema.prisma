@@ -1,0 +1,38 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "sqlite"
+    url      = env("DATABASE_URL")
+}
+
+model sailors {
+    sid    Int    @id
+    sname  String
+    rating Int
+    age    Float
+
+    reserves reserves[]
+}
+
+model boats {
+    bid   Int    @id
+    bname String
+    color String
+
+    reserves reserves[]
+}
+
+model reserves {
+    sailorId Int
+    boatId   Int
+    days     String
+    sailors  sailors @relation(fields: [sailorId], references: [sid])
+    boats    boats   @relation(fields: [boatId], references: [bid])
+
+    @@id([sailorId, boatId, days])
+}
