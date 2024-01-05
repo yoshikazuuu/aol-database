@@ -131,7 +131,7 @@ export function UpdateReserve({
             control={form.control}
             name="sid"
             render={({ field }) => (
-              <FormItem className="min-w-[400px]">
+              <FormItem className="w-full ">
                 <FormLabel className="font-bold">Sailor ID</FormLabel>
                 <FormControl>
                   <Input
@@ -149,7 +149,7 @@ export function UpdateReserve({
             control={form.control}
             name="bid"
             render={({ field }) => (
-              <FormItem className="min-w-[400px]">
+              <FormItem className="w-full ">
                 <FormLabel className="font-bold">Boat ID</FormLabel>
                 <FormControl>
                   <Input
@@ -167,7 +167,7 @@ export function UpdateReserve({
             control={form.control}
             name="days"
             render={({ field }) => (
-              <FormItem className="min-w-[400px]">
+              <FormItem className="w-full ">
                 <FormLabel className="font-bold">Day</FormLabel>
                 <FormControl>
                   <Input {...field} placeholder="MM/DD/YY" />

@@ -110,7 +110,7 @@ export function FormReserve() {
             control={form.control}
             name="sid"
             render={({ field }) => (
-              <FormItem className="min-w-[400px]">
+              <FormItem className="w-[80vw] sm:max-w-[400px]">
                 <FormLabel className="font-bold">Sailor ID</FormLabel>
                 <FormControl>
                   <Input {...field} placeholder="Sailor ID" type="number" />
@@ -123,7 +123,7 @@ export function FormReserve() {
             control={form.control}
             name="bid"
             render={({ field }) => (
-              <FormItem className="min-w-[400px]">
+              <FormItem className="w-[80vw] sm:max-w-[400px]">
                 <FormLabel className="font-bold">Boat ID</FormLabel>
                 <FormControl>
                   <Input {...field} placeholder="Boat ID" type="number" />
@@ -136,7 +136,7 @@ export function FormReserve() {
             control={form.control}
             name="day"
             render={({ field }) => (
-              <FormItem className="min-w-[400px]">
+              <FormItem className="w-[80vw] sm:max-w-[400px]">
                 <FormLabel className="font-bold">Day</FormLabel>
                 <FormControl>
                   <Input {...field} placeholder="MM/DD/YY" />

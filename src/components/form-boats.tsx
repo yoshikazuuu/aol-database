@@ -98,7 +98,7 @@ export function FormBoat() {
             control={form.control}
             name="bid"
             render={({ field }) => (
-              <FormItem className="min-w-[400px]">
+              <FormItem className="w-[80vw] sm:max-w-[400px]">
                 <FormLabel className="font-bold">Boat ID</FormLabel>
                 <FormControl>
                   <Input {...field} placeholder="Boat ID" type="number" />
@@ -111,7 +111,7 @@ export function FormBoat() {
             control={form.control}
             name="bname"
             render={({ field }) => (
-              <FormItem className="min-w-[400px]">
+              <FormItem className="w-[80vw] sm:max-w-[400px]">
                 <FormLabel className="font-bold">Boat Name</FormLabel>
                 <FormControl>
                   <Input {...field} placeholder="Boat Name" />
@@ -124,7 +124,7 @@ export function FormBoat() {
             control={form.control}
             name="color"
             render={({ field }) => (
-              <FormItem className="min-w-[400px]">
+              <FormItem className="w-[80vw] sm:max-w-[400px]">
                 <FormLabel className="font-bold">Color</FormLabel>
                 <FormControl>
                   <Input {...field} placeholder="Color" />

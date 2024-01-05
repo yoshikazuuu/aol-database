@@ -120,7 +120,7 @@ export function UpdateSailor({
             control={form.control}
             name="sid"
             render={({ field }) => (
-              <FormItem className="min-w-[400px]">
+              <FormItem className="w-full ">
                 <FormLabel className="font-bold">Sailor ID</FormLabel>
                 <FormControl>
                   <Input
@@ -138,7 +138,7 @@ export function UpdateSailor({
             control={form.control}
             name="sname"
             render={({ field }) => (
-              <FormItem className="min-w-[400px]">
+              <FormItem className="w-full ">
                 <FormLabel className="font-bold">Sailor Name</FormLabel>
                 <FormControl>
                   <Input {...field} placeholder="Sailor Name" />
@@ -151,7 +151,7 @@ export function UpdateSailor({
             control={form.control}
             name="rating"
             render={({ field }) => (
-              <FormItem className="min-w-[400px]">
+              <FormItem className="w-full ">
                 <FormLabel className="font-bold">Rating</FormLabel>
                 <FormControl>
                   <Input {...field} placeholder="Rating" type="number" />
@@ -164,7 +164,7 @@ export function UpdateSailor({
             control={form.control}
             name="age"
             render={({ field }) => (
-              <FormItem className="min-w-[400px]">
+              <FormItem className="w-full ">
                 <FormLabel className="font-bold">Age</FormLabel>
                 <FormControl>
                   <Input {...field} placeholder="Age" type="number" />

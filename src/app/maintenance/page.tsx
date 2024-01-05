@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function Maintenance() {
   return (
     <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-      <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
+      <h1 className="text-wrap text-center text-5xl font-extrabold tracking-tight sm:text-[5rem]">
         <span className="text-[hsl(57,100%,80%)]">Data</span> Maintenance
       </h1>
 
