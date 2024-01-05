@@ -26,7 +26,7 @@ export default async function Home() {
           </div>
         </Link>
       </div>
-      <p className="mt-8 text-center text-lg">
+      <p className="mt-8 text-center text-sm">
         Anggota
         <br />
         Samuel Benediktus Meliala - 2602158355 <br />

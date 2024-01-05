@@ -115,12 +115,12 @@ export default function Page() {
         <p className="text-md">Click the item to delete!</p>
 
         {table === "sailors" && (
-          <div className="grid grid-cols-3 items-center gap-2">
+          <div className="grid grid-cols-1 items-center gap-2 md:grid-cols-2 lg:grid-cols-3">
             {(data as sailors[])?.map((sailor, index) => (
               <div
                 key={index}
                 onClick={() => handleDelete({ sid: sailor.sid })}
-                className=",oflex-row flex w-[300px] cursor-pointer items-center justify-between gap-2 rounded-md border p-3 transition-all duration-200 hover:scale-[1.03] hover:bg-red-600 active:scale-[0.97]"
+                className="flex w-[80vw] cursor-pointer flex-row items-center justify-between gap-2 rounded-md border p-3 transition-all duration-200 hover:scale-[1.03] hover:bg-red-600 active:scale-[0.97] sm:w-[300px]"
               >
                 <p className="text-md">
                   Name: {sailor.sname}
@@ -134,12 +134,12 @@ export default function Page() {
         )}
 
         {table === "boats" && (
-          <div className="grid grid-cols-3 items-center gap-2">
+          <div className="grid grid-cols-1 items-center gap-2 md:grid-cols-2 lg:grid-cols-3">
             {(data as boats[])?.map((boat, index) => (
               <div
                 key={index}
                 onClick={() => handleDelete({ bid: boat.bid })}
-                className="cursor-pointer,o flex w-[300px] flex-row items-center justify-between gap-2 rounded-md border p-3 transition-all duration-200 hover:scale-[1.03] hover:bg-red-600 active:scale-[0.97]"
+                className="flex w-[80vw] cursor-pointer flex-row items-center justify-between gap-2 rounded-md border p-3 transition-all duration-200 hover:scale-[1.03] hover:bg-red-600 active:scale-[0.97] sm:w-[300px]"
               >
                 <p className="text-md">
                   {boat.bid} - {boat.bname} - {boat.color}
@@ -151,7 +151,7 @@ export default function Page() {
         )}
 
         {table === "reserves" && (
-          <div className="grid grid-cols-3 items-center gap-2">
+          <div className="grid grid-cols-1 items-center gap-2 md:grid-cols-2 lg:grid-cols-3">
             {(data as reserves[])?.map((reserve, index) => (
               <div
                 key={index}
@@ -163,7 +163,7 @@ export default function Page() {
                     bid: reserve.bid,
                   })
                 }
-                className="cursor-pointer,o flex w-[300px] flex-row items-center justify-between gap-2 rounded-md border p-3 transition-all duration-200 hover:scale-[1.03] hover:bg-red-600 active:scale-[0.97]"
+                className="flex w-[80vw] cursor-pointer flex-row items-center justify-between gap-2 rounded-md border p-3 transition-all duration-200 hover:scale-[1.03] hover:bg-red-600 active:scale-[0.97] sm:w-[300px]"
               >
                 <p className="text-md">
                   Days: {reserve.days}

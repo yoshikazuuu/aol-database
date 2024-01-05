@@ -105,11 +105,11 @@ export default function Page() {
         <p className="text-md">Click the item to update!</p>
 
         {table === "sailors" && (
-          <div className="grid grid-cols-3 items-center gap-2">
+          <div className="grid grid-cols-1 items-center gap-2 md:grid-cols-2 lg:grid-cols-3">
             {(data as sailors[])?.map((sailor, index) => (
               <Dialog key={index}>
                 <DialogTrigger>
-                  <div className="flex w-[300px] cursor-pointer flex-row items-center justify-between gap-2 rounded-md border p-3 transition-all duration-200 hover:scale-[1.03] hover:bg-green-500  active:scale-[0.97]">
+                  <div className="flex w-[80vw] cursor-pointer flex-row items-center justify-between gap-2 rounded-md border p-3 transition-all duration-200 hover:scale-[1.03] hover:bg-green-500 active:scale-[0.97]  sm:w-[300px]">
                     <p className="text-md text-left">
                       Name: {sailor.sname}
                       <br /> Rating: {sailor.rating}
@@ -139,11 +139,11 @@ export default function Page() {
         )}
 
         {table === "boats" && (
-          <div className="grid grid-cols-3 items-center gap-2">
+          <div className="grid grid-cols-1 items-center gap-2 md:grid-cols-2 lg:grid-cols-3">
             {(data as boats[])?.map((boat, index) => (
               <Dialog key={index}>
                 <DialogTrigger>
-                  <div className="flex w-[300px] cursor-pointer flex-row items-center justify-between gap-2 rounded-md border p-3 transition-all duration-200 hover:scale-[1.03] hover:bg-green-500  active:scale-[0.97]">
+                  <div className="flex w-[80vw] cursor-pointer flex-row items-center justify-between gap-2 rounded-md border p-3 transition-all duration-200 hover:scale-[1.03] hover:bg-green-500 active:scale-[0.97]  sm:w-[300px]">
                     <p className="text-md">
                       {boat.bid} - {boat.bname} - {boat.color}
                     </p>
@@ -171,11 +171,11 @@ export default function Page() {
         )}
 
         {table === "reserves" && (
-          <div className="grid grid-cols-3 items-center gap-2">
+          <div className="grid grid-cols-1 items-center gap-2 md:grid-cols-2 lg:grid-cols-3">
             {(data as reserves[])?.map((reserve, index) => (
               <Dialog key={index}>
                 <DialogTrigger>
-                  <div className="flex w-[300px] cursor-pointer flex-row items-center justify-between gap-2 rounded-md border p-3 transition-all duration-200 hover:scale-[1.03] hover:bg-green-500  active:scale-[0.97]">
+                  <div className="flex w-[80vw] cursor-pointer flex-row items-center justify-between gap-2 rounded-md border p-3 transition-all duration-200 hover:scale-[1.03] hover:bg-green-500 active:scale-[0.97]  sm:w-[300px]">
                     <p className="text-md text-left">
                       Days: {reserve.days}
                       <br />

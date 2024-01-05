@@ -5,29 +5,29 @@ import { api } from "@/trpc/react";
 import Link from "next/link";
 
 interface SailorsCountData {
-  "COUNT(*)": number;
+  count: number;
 }
 
 interface BoatsCountData {
-  "COUNT(*)": number;
+  count: number;
 }
 
 interface AvgRatingData {
-  "AVG(rating)": number;
+  avg: number;
 }
 
 interface AvgAgeData {
-  "AVG(age)": number;
+  avg: number;
 }
 
 export default function Report() {
   const { data: sailorsCount } =
-    api.database.countSailors.useQuery<SailorsCountData>();
+    api.database.countSailors.useQuery<SailorsCountData[]>();
   const { data: boatsCount } =
-    api.database.countBoats.useQuery<BoatsCountData>();
+    api.database.countBoats.useQuery<BoatsCountData[]>();
   const { data: avgRating } =
-    api.database.averageRating.useQuery<AvgRatingData>();
-  const { data: avgAge } = api.database.averageAge.useQuery<AvgAgeData>();
+    api.database.averageRating.useQuery<AvgRatingData[]>();
+  const { data: avgAge } = api.database.averageAge.useQuery<AvgAgeData[]>();
 
   if (!sailorsCount || !boatsCount || !avgRating || !avgAge) {
     return (
@@ -40,12 +40,10 @@ export default function Report() {
     );
   }
 
-  console.log(sailorsCount, boatsCount, avgRating, avgAge);
-
-  const sailorsCountValue = Number(sailorsCount["COUNT(*)"] || 0);
-  const boatsCountValue = Number(boatsCount["COUNT(*)"] || 0);
-  const avgRatingValue = Number(avgRating["AVG(rating)"] || 0);
-  const avgAgeValue = Number(avgAge["AVG(age)"] || 0);
+  const sailorsCountValue = Number(sailorsCount[0]?.count ?? 0);
+  const boatsCountValue = Number(boatsCount[0]?.count ?? 0);
+  const avgRatingValue = Number(avgRating[0]?.avg ?? 0);
+  const avgAgeValue = Number(avgAge[0]?.avg ?? 0);
 
   return (
     <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">

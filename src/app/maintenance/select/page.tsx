@@ -61,9 +61,9 @@ export default function Page() {
         </div>
 
         {table === "sailors" && (
-          <div className="grid grid-cols-3 items-center gap-2">
+          <div className="grid grid-cols-1 items-center gap-2 md:grid-cols-2 lg:grid-cols-3">
             {(data.data as sailors[])?.map((sailor) => (
-              <div className="flex w-[300px] flex-row items-center justify-between gap-2 rounded-md border p-3">
+              <div className="flex w-[80vw] flex-row items-center justify-between gap-2 rounded-md border p-3 sm:w-[300px]">
                 <p className="text-md">
                   Name: {sailor.sname}
                   <br /> Rating: {sailor.rating}
@@ -76,9 +76,9 @@ export default function Page() {
         )}
 
         {table === "boats" && (
-          <div className="grid grid-cols-3 items-center gap-2">
+          <div className="grid grid-cols-1 items-center gap-2 md:grid-cols-2 lg:grid-cols-3">
             {(data.data as boats[])?.map((boat) => (
-              <div className="flex w-[300px] flex-row items-center justify-between gap-2 rounded-md border p-3">
+              <div className="flex w-[80vw] flex-row items-center justify-between gap-2 rounded-md border p-3 sm:w-[300px]">
                 <p className="text-md">
                   {boat.bid} - {boat.bname} - {boat.color}
                 </p>
@@ -89,9 +89,9 @@ export default function Page() {
         )}
 
         {table === "reserves" && (
-          <div className="grid grid-cols-3 items-center gap-2">
+          <div className="grid grid-cols-1 items-center gap-2 md:grid-cols-2 lg:grid-cols-3">
             {(data.data as reserves[])?.map((reserve) => (
-              <div className="flex w-[300px] flex-row items-center justify-between gap-2 rounded-md border p-3">
+              <div className="flex w-[80vw] flex-row items-center justify-between gap-2 rounded-md border p-3 sm:w-[300px]">
                 <p className="text-md">
                   Days: {reserve.days}
                   <br />
