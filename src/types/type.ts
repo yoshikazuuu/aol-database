@@ -1,0 +1,1 @@
+export type TableType = "sailors" | "boats" | "reserves";
