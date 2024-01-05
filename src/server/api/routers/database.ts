@@ -24,21 +24,21 @@ export const databaseRouter = createTRPCRouter({
         age: z.number(),
       }),
     )
-    .query(({ ctx, input }) => {
+    .mutation(({ ctx, input }) => {
       return ctx.db
         .$queryRaw`UPDATE sailors SET sname = ${input.sname}, rating = ${input.rating}, age = ${input.age} WHERE sid = ${input.sid}`;
     }),
 
   updateBoat: publicProcedure
     .input(z.object({ bid: z.number(), bname: z.string(), color: z.string() }))
-    .query(({ ctx, input }) => {
+    .mutation(({ ctx, input }) => {
       return ctx.db
         .$queryRaw`UPDATE boats SET bname = ${input.bname}, color = ${input.color} WHERE bid = ${input.bid}`;
     }),
 
   updateReserve: publicProcedure
     .input(z.object({ sid: z.number(), bid: z.number(), day: z.number() }))
-    .query(({ ctx, input }) => {
+    .mutation(({ ctx, input }) => {
       return ctx.db
         .$queryRaw`UPDATE reserves SET day = ${input.day} WHERE sid = ${input.sid} AND bid = ${input.bid}`;
     }),

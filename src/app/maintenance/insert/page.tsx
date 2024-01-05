@@ -39,6 +39,7 @@ export default function Page() {
         {table === "boats" && <FormBoat />}
 
         {table === "reserves" && <FormReserve />}
+
         <Link href="/maintenance">
           <Button>Go Back ←</Button>
         </Link>

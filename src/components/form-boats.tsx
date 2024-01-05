@@ -14,7 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import { api } from "@/trpc/react";
 
 const formSchema = z.object({
@@ -35,8 +35,7 @@ export function FormBoat() {
 
   const submitData = api.database.insertBoat.useMutation({
     onSuccess: () => {
-      toast({
-        title: "Boat added ✅",
+      toast.success("Boat added ✅", {
         description: (
           <div>
             <p>Sukses ditambahkan</p>
@@ -56,8 +55,7 @@ export function FormBoat() {
       });
     },
     onError: (error) => {
-      toast({
-        title: "Boat failed to add ❌",
+      toast.error("Boat failed to add ❌", {
         description: (
           <div>
             <p>{error.message}</p>
@@ -70,8 +68,7 @@ export function FormBoat() {
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     form.reset();
     submitData.mutate(data);
-    toast({
-      title: "Adding boat ⏳",
+    toast.message("Adding boat ⏳", {
       description: (
         <div>
           <p>Boat ID: {data.bid}</p>

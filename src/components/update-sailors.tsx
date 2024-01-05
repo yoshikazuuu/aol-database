@@ -16,35 +16,38 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { api } from "@/trpc/react";
+import { type sailors } from "@prisma/client";
+import { DialogClose } from "./ui/dialog";
 
 const formSchema = z.object({
-  sid: z.coerce.number().positive({ message: "Sailor ID must be positive" }),
-  bid: z.coerce.number().positive({ message: "Boat ID must be positive" }),
-  day: z.string().refine(
-    (val) => {
-      // Regular expression to match the date format MM/DD/YY
-      const dateRegex = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{2}$/;
-      return dateRegex.test(val);
-    },
-    {
-      message: "Day must be in MM/DD/YY format",
-    },
-  ),
+  sid: z.coerce.number().positive({ message: "Boat ID must be positive" }),
+  sname: z.string().min(1),
+  rating: z.coerce.number().positive({ message: "Boat ID must be positive" }),
+  age: z.coerce.number().positive({ message: "Boat ID must be positive" }),
 });
 
-export function FormReserve() {
+export function UpdateSailor({
+  data,
+  refresh,
+  setRefresh,
+}: {
+  data: sailors;
+  refresh: boolean;
+  setRefresh: (value: boolean) => void;
+}) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      sid: 0,
-      bid: 0,
-      day: "",
+      sid: data.sid,
+      sname: data.sname || "",
+      rating: data.rating || 0,
+      age: data.age || 0,
     },
   });
 
-  const submitData = api.database.insertReserve.useMutation({
+  const submitData = api.database.updateSailor.useMutation({
     onSuccess: () => {
-      toast.success("Reserve added ✅", {
+      toast.success("Sailor update ✅", {
         description: (
           <div>
             <p>Sukses ditambahkan</p>
@@ -64,13 +67,10 @@ export function FormReserve() {
       });
     },
     onError: (error) => {
-      toast.error("Reserve failed to add ❌", {
+      toast.error("Sailor failed to add ❌", {
         description: (
           <div>
             <p>{error.message}</p>
-            <p className="font-bold text-foreground">
-              Hint: Pastikan Sailor ID dan Boat ID exist!
-            </p>
           </div>
         ),
       });
@@ -80,12 +80,13 @@ export function FormReserve() {
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     form.reset();
     submitData.mutate(data);
-    toast.message("Adding reserve ⏳", {
+    toast("Updating sailor ⏳", {
       description: (
         <div>
           <p>Sailor ID: {data.sid}</p>
-          <p>Boat ID: {data.bid}</p>
-          <p>Day: {data.day}</p>
+          <p>Sailor Name: {data.sname}</p>
+          <p>Rating: {data.rating}</p>
+          <p>Age: {data.age}</p>
           <p>
             {new Date().toLocaleString("id-ID", {
               year: "numeric",
@@ -113,7 +114,12 @@ export function FormReserve() {
               <FormItem className="min-w-[400px]">
                 <FormLabel className="font-bold">Sailor ID</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Sailor ID" type="number" />
+                  <Input
+                    {...field}
+                    placeholder="Sailor ID"
+                    type="number"
+                    disabled
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -121,12 +127,12 @@ export function FormReserve() {
           />
           <FormField
             control={form.control}
-            name="bid"
+            name="sname"
             render={({ field }) => (
               <FormItem className="min-w-[400px]">
-                <FormLabel className="font-bold">Boat ID</FormLabel>
+                <FormLabel className="font-bold">Sailor Name</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Boat ID" type="number" />
+                  <Input {...field} placeholder="Sailor Name" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -134,18 +140,35 @@ export function FormReserve() {
           />
           <FormField
             control={form.control}
-            name="day"
+            name="rating"
             render={({ field }) => (
               <FormItem className="min-w-[400px]">
-                <FormLabel className="font-bold">Day</FormLabel>
+                <FormLabel className="font-bold">Rating</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="MM/DD/YY" />
+                  <Input {...field} placeholder="Rating" type="number" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button type="submit">Submit</Button>
+          <FormField
+            control={form.control}
+            name="age"
+            render={({ field }) => (
+              <FormItem className="min-w-[400px]">
+                <FormLabel className="font-bold">Age</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="Age" type="number" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <DialogClose asChild>
+            <Button onClick={() => setRefresh(!refresh)} type="submit">
+              Submit
+            </Button>
+          </DialogClose>
         </div>
       </form>
     </Form>

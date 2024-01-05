@@ -37,7 +37,7 @@ export function FormSailor() {
 
   const submitData = api.database.insertSailor.useMutation({
     onSuccess: () => {
-      toast("Sailor added ✅", {
+      toast.success("Sailor added ✅", {
         description: (
           <div>
             <p>Sukses ditambahkan</p>
@@ -57,7 +57,7 @@ export function FormSailor() {
       });
     },
     onError: (error) => {
-      toast("Sailor failed to add ❌", {
+      toast.error("Sailor failed to add ❌", {
         description: (
           <div>
             <p>{error.message}</p>
