@@ -83,6 +83,23 @@ export default function Page() {
     }
   })();
 
+  if (sailorQuery.isLoading || boatQuery.isLoading || reserveQuery.isLoading) {
+    return (
+      <div className="container flex flex-col items-center justify-center gap-4 px-4 py-16 ">
+        <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
+          <span className="text-[hsl(57,100%,80%)]">Select</span> Data
+        </h1>
+
+        <div className="flex items-center gap-2">
+          <p className="text-md">Current table selected: </p>
+          <SelectMenu value={table} onChange={handleSelectChange} />
+        </div>
+
+        <p className="py-10">Loading...</p>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="container flex flex-col items-center justify-center gap-4 px-4 py-16 ">
