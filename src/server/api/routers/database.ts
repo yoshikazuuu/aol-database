@@ -37,10 +37,10 @@ export const databaseRouter = createTRPCRouter({
     }),
 
   updateReserve: publicProcedure
-    .input(z.object({ sid: z.number(), bid: z.number(), day: z.number() }))
+    .input(z.object({ sid: z.number(), bid: z.number(), days: z.string() }))
     .mutation(({ ctx, input }) => {
       return ctx.db
-        .$queryRaw`UPDATE reserves SET day = ${input.day} WHERE sid = ${input.sid} AND bid = ${input.bid}`;
+        .$queryRaw`UPDATE reserves SET days = ${input.days} WHERE sid = ${input.sid} AND bid = ${input.bid}`;
     }),
 
   insertSailor: publicProcedure

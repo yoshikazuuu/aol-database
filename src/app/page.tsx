@@ -26,6 +26,14 @@ export default async function Home() {
           </div>
         </Link>
       </div>
+      <p className="mt-8 text-center text-lg">
+        Anggota
+        <br />
+        Samuel Benediktus Meliala - 2602158355 <br />
+        Stanislaus Kanaya Jerry Febriano - 2602187664 <br />
+        Muhammad Ikhsan Nurasid - 2602168053 <br />
+        Muhammad Haekal Aditya Rahmadyan - 2602192071
+      </p>
     </div>
   );
 }

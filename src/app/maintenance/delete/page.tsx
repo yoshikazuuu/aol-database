@@ -54,12 +54,18 @@ export default function Page() {
       let errorMessage = "Unknown error";
 
       if (error instanceof Error) {
-        // Now that we've checked, we can safely access 'message' or other Error properties.
         errorMessage = `Error: ${error.message}`;
       }
 
       toast.error(errorTitle, {
-        description: <p>{errorMessage}</p>,
+        description: (
+          <>
+            <p>{errorMessage}</p>
+            <p className="font-bold text-foreground">
+              Hint: Pastikan ID sedang tidak digunakan di reserve!
+            </p>
+          </>
+        ),
       });
     }
   };
@@ -93,8 +99,9 @@ export default function Page() {
 
         {table === "sailors" && (
           <div className="grid grid-cols-3 items-center gap-2">
-            {(data as sailors[])?.map((sailor) => (
+            {(data as sailors[])?.map((sailor, index) => (
               <div
+                key={index}
                 onClick={() => handleDelete({ sid: sailor.sid })}
                 className=",oflex-row flex w-[300px] cursor-pointer items-center justify-between gap-2 rounded-md border p-3 transition-all duration-200 hover:scale-[1.03] hover:bg-red-600 active:scale-[0.97]"
               >
@@ -111,8 +118,9 @@ export default function Page() {
 
         {table === "boats" && (
           <div className="grid grid-cols-3 items-center gap-2">
-            {(data as boats[])?.map((boat) => (
+            {(data as boats[])?.map((boat, index) => (
               <div
+                key={index}
                 onClick={() => handleDelete({ bid: boat.bid })}
                 className="cursor-pointer,o flex w-[300px] flex-row items-center justify-between gap-2 rounded-md border p-3 transition-all duration-200 hover:scale-[1.03] hover:bg-red-600 active:scale-[0.97]"
               >
@@ -127,8 +135,9 @@ export default function Page() {
 
         {table === "reserves" && (
           <div className="grid grid-cols-3 items-center gap-2">
-            {(data as reserves[])?.map((reserve) => (
+            {(data as reserves[])?.map((reserve, index) => (
               <div
+                key={index}
                 onClick={() =>
                   handleDelete({
                     sid: reserve.sid as number,

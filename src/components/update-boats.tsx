@@ -16,23 +16,22 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { api } from "@/trpc/react";
-import { type sailors } from "@prisma/client";
+import { type boats } from "@prisma/client";
 import { DialogClose } from "./ui/dialog";
 import { useEffect, useState } from "react";
 
 const formSchema = z.object({
-  sid: z.coerce.number().positive({ message: "Boat ID must be positive" }),
-  sname: z.string().min(1),
-  rating: z.coerce.number().positive({ message: "Boat ID must be positive" }),
-  age: z.coerce.number().positive({ message: "Boat ID must be positive" }),
+  bid: z.coerce.number().positive({ message: "Boat ID must be positive" }),
+  bname: z.string().min(1),
+  color: z.string().min(1),
 });
 
-export function UpdateSailor({
+export function UpdateBoat({
   data,
   refresh,
   setRefresh,
 }: {
-  data: sailors;
+  data: boats;
   refresh: boolean;
   setRefresh: (value: boolean) => void;
 }) {
@@ -41,10 +40,9 @@ export function UpdateSailor({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      sid: data.sid,
-      sname: data.sname || "",
-      rating: data.rating || 0,
-      age: data.age || 0,
+      bid: data.bid,
+      bname: data.bname || "",
+      color: data.color || "",
     },
     mode: "onChange",
   });
@@ -53,9 +51,9 @@ export function UpdateSailor({
     setDisabled(!form.formState.isValid);
   }, [form.formState]);
 
-  const submitData = api.database.updateSailor.useMutation({
+  const submitData = api.database.updateBoat.useMutation({
     onSuccess: () => {
-      toast.success("Sailor update ✅", {
+      toast.success("Boat updated ✅", {
         description: (
           <div>
             <p>Sukses ditambahkan</p>
@@ -76,7 +74,7 @@ export function UpdateSailor({
       setRefresh(!refresh);
     },
     onError: (error) => {
-      toast.error("Sailor failed to add ❌", {
+      toast.error("Boat failed to update ❌", {
         description: (
           <div>
             <p>{error.message}</p>
@@ -89,13 +87,12 @@ export function UpdateSailor({
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     form.reset();
     submitData.mutate(data);
-    toast("Updating sailor ⏳", {
+    toast.message("Updating boat ⏳", {
       description: (
         <div>
-          <p>Sailor ID: {data.sid}</p>
-          <p>Sailor Name: {data.sname}</p>
-          <p>Rating: {data.rating}</p>
-          <p>Age: {data.age}</p>
+          <p>Boat ID: {data.bid}</p>
+          <p>Boat Name: {data.bname}</p>
+          <p>Color: {data.color}</p>
           <p>
             {new Date().toLocaleString("id-ID", {
               year: "numeric",
@@ -118,14 +115,14 @@ export function UpdateSailor({
         <div className="flex flex-col gap-2 text-left">
           <FormField
             control={form.control}
-            name="sid"
+            name="bid"
             render={({ field }) => (
               <FormItem className="min-w-[400px]">
-                <FormLabel className="font-bold">Sailor ID</FormLabel>
+                <FormLabel className="font-bold">Boat ID</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
-                    placeholder="Sailor ID"
+                    placeholder="Boat ID"
                     type="number"
                     disabled
                   />
@@ -136,12 +133,12 @@ export function UpdateSailor({
           />
           <FormField
             control={form.control}
-            name="sname"
+            name="bname"
             render={({ field }) => (
               <FormItem className="min-w-[400px]">
-                <FormLabel className="font-bold">Sailor Name</FormLabel>
+                <FormLabel className="font-bold">Boat Name</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Sailor Name" />
+                  <Input {...field} placeholder="Boat Name" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -149,25 +146,12 @@ export function UpdateSailor({
           />
           <FormField
             control={form.control}
-            name="rating"
+            name="color"
             render={({ field }) => (
               <FormItem className="min-w-[400px]">
-                <FormLabel className="font-bold">Rating</FormLabel>
+                <FormLabel className="font-bold">Color</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Rating" type="number" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="age"
-            render={({ field }) => (
-              <FormItem className="min-w-[400px]">
-                <FormLabel className="font-bold">Age</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder="Age" type="number" />
+                  <Input {...field} placeholder="Color" />
                 </FormControl>
                 <FormMessage />
               </FormItem>

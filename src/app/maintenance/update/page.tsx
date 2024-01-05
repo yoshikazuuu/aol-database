@@ -21,6 +21,8 @@ import {
 
 import { UpdateSailor } from "@/components/update-sailors";
 import { toast } from "sonner";
+import { UpdateReserve } from "@/components/update-reserves";
+import { UpdateBoat } from "@/components/update-boats";
 
 export default function Page() {
   const router = useRouter();
@@ -28,6 +30,7 @@ export default function Page() {
 
   const [table, setTable] = useState<TableType>(selectedTable || "sailors");
   const [refresh, setRefresh] = useState(false);
+  const [prevRefresh, setPrevRefresh] = useState(false);
 
   const handleSelectChange = (newValue: TableType) => {
     setTable(newValue);
@@ -46,7 +49,7 @@ export default function Page() {
         reserveQuery.refetch(),
       ])
         .then(() => {
-          setRefresh(!refresh);
+          setPrevRefresh(!prevRefresh);
         })
         .catch((error) => {
           console.error(error);
@@ -86,10 +89,10 @@ export default function Page() {
 
         {table === "sailors" && (
           <div className="grid grid-cols-3 items-center gap-2">
-            {(data as sailors[])?.map((sailor) => (
-              <Dialog>
+            {(data as sailors[])?.map((sailor, index) => (
+              <Dialog key={index}>
                 <DialogTrigger>
-                  <div className="flex w-[300px] cursor-pointer flex-row items-center justify-between gap-2 rounded-md border p-3 transition-all duration-200 hover:scale-[1.03] hover:bg-yellow-300 hover:text-black active:scale-[0.97]">
+                  <div className="flex w-[300px] cursor-pointer flex-row items-center justify-between gap-2 rounded-md border p-3 transition-all duration-200 hover:scale-[1.03] hover:bg-green-500  active:scale-[0.97]">
                     <p className="text-md text-left">
                       Name: {sailor.sname}
                       <br /> Rating: {sailor.rating}
@@ -120,29 +123,67 @@ export default function Page() {
 
         {table === "boats" && (
           <div className="grid grid-cols-3 items-center gap-2">
-            {(data as boats[])?.map((boat) => (
-              <div className="flex w-[300px] cursor-pointer flex-row items-center justify-between gap-2 rounded-md border p-3 transition-all duration-200 hover:scale-[1.03] hover:bg-yellow-300 hover:text-black active:scale-[0.97]">
-                <p className="text-md">
-                  {boat.bid} - {boat.bname} - {boat.color}
-                </p>
-                <p className="text-4xl font-extrabold">{boat.bid}</p>
-              </div>
+            {(data as boats[])?.map((boat, index) => (
+              <Dialog key={index}>
+                <DialogTrigger>
+                  <div className="flex w-[300px] cursor-pointer flex-row items-center justify-between gap-2 rounded-md border p-3 transition-all duration-200 hover:scale-[1.03] hover:bg-green-500  active:scale-[0.97]">
+                    <p className="text-md">
+                      {boat.bid} - {boat.bname} - {boat.color}
+                    </p>
+                    <p className="text-4xl font-extrabold">{boat.bid}</p>
+                  </div>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Update</DialogTitle>
+                    <DialogDescription>
+                      Rubah data yang ada kemudian klik update!
+                    </DialogDescription>
+                    <div className="flex flex-col space-y-3 py-4">
+                      <UpdateBoat
+                        data={boat}
+                        refresh={refresh}
+                        setRefresh={setRefresh}
+                      />
+                    </div>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
             ))}
           </div>
         )}
 
         {table === "reserves" && (
           <div className="grid grid-cols-3 items-center gap-2">
-            {(data as reserves[])?.map((reserve) => (
-              <div className="flex w-[300px] cursor-pointer flex-row items-center justify-between gap-2 rounded-md border p-3 transition-all duration-200 hover:scale-[1.03] hover:bg-yellow-300 hover:text-black active:scale-[0.97]">
-                <p className="text-md">
-                  Days: {reserve.days}
-                  <br />
-                  Sailor ID: {reserve.sid}
-                  <br />
-                  Boat ID:{reserve.bid}
-                </p>
-              </div>
+            {(data as reserves[])?.map((reserve, index) => (
+              <Dialog key={index}>
+                <DialogTrigger>
+                  <div className="flex w-[300px] cursor-pointer flex-row items-center justify-between gap-2 rounded-md border p-3 transition-all duration-200 hover:scale-[1.03] hover:bg-green-500  active:scale-[0.97]">
+                    <p className="text-md text-left">
+                      Days: {reserve.days}
+                      <br />
+                      Sailor ID: {reserve.sid}
+                      <br />
+                      Boat ID: {reserve.bid}
+                    </p>
+                  </div>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Update</DialogTitle>
+                    <DialogDescription>
+                      Rubah data yang ada kemudian klik update!
+                    </DialogDescription>
+                    <div className="flex flex-col space-y-3 py-4">
+                      <UpdateReserve
+                        data={reserve}
+                        refresh={refresh}
+                        setRefresh={setRefresh}
+                      />
+                    </div>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
             ))}
           </div>
         )}

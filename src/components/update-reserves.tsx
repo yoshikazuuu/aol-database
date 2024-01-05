@@ -16,23 +16,31 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { api } from "@/trpc/react";
-import { type sailors } from "@prisma/client";
+import { type reserves } from "@prisma/client";
 import { DialogClose } from "./ui/dialog";
 import { useEffect, useState } from "react";
 
 const formSchema = z.object({
-  sid: z.coerce.number().positive({ message: "Boat ID must be positive" }),
-  sname: z.string().min(1),
-  rating: z.coerce.number().positive({ message: "Boat ID must be positive" }),
-  age: z.coerce.number().positive({ message: "Boat ID must be positive" }),
+  sid: z.coerce.number().positive({ message: "Sailor ID must be positive" }),
+  bid: z.coerce.number().positive({ message: "Boat ID must be positive" }),
+  days: z.string().refine(
+    (val) => {
+      // Regular expression to match the date format MM/DD/YY
+      const dateRegex = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{2}$/;
+      return dateRegex.test(val);
+    },
+    {
+      message: "Day must be in MM/DD/YY format",
+    },
+  ),
 });
 
-export function UpdateSailor({
+export function UpdateReserve({
   data,
   refresh,
   setRefresh,
 }: {
-  data: sailors;
+  data: reserves;
   refresh: boolean;
   setRefresh: (value: boolean) => void;
 }) {
@@ -41,10 +49,9 @@ export function UpdateSailor({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      sid: data.sid,
-      sname: data.sname || "",
-      rating: data.rating || 0,
-      age: data.age || 0,
+      sid: data.sid as number,
+      bid: data.bid as number,
+      days: data.days || "",
     },
     mode: "onChange",
   });
@@ -53,9 +60,9 @@ export function UpdateSailor({
     setDisabled(!form.formState.isValid);
   }, [form.formState]);
 
-  const submitData = api.database.updateSailor.useMutation({
+  const submitData = api.database.updateReserve.useMutation({
     onSuccess: () => {
-      toast.success("Sailor update ✅", {
+      toast.success("Reserve updated ✅", {
         description: (
           <div>
             <p>Sukses ditambahkan</p>
@@ -76,10 +83,13 @@ export function UpdateSailor({
       setRefresh(!refresh);
     },
     onError: (error) => {
-      toast.error("Sailor failed to add ❌", {
+      toast.error("Reserve failed to update ❌", {
         description: (
           <div>
             <p>{error.message}</p>
+            <p className="font-bold text-foreground">
+              Hint: Pastikan Sailor ID dan Boat ID exist!
+            </p>
           </div>
         ),
       });
@@ -89,13 +99,12 @@ export function UpdateSailor({
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     form.reset();
     submitData.mutate(data);
-    toast("Updating sailor ⏳", {
+    toast.message("Updating reserve ⏳", {
       description: (
         <div>
           <p>Sailor ID: {data.sid}</p>
-          <p>Sailor Name: {data.sname}</p>
-          <p>Rating: {data.rating}</p>
-          <p>Age: {data.age}</p>
+          <p>Boat ID: {data.bid}</p>
+          <p>Day: {data.days}</p>
           <p>
             {new Date().toLocaleString("id-ID", {
               year: "numeric",
@@ -136,12 +145,17 @@ export function UpdateSailor({
           />
           <FormField
             control={form.control}
-            name="sname"
+            name="bid"
             render={({ field }) => (
               <FormItem className="min-w-[400px]">
-                <FormLabel className="font-bold">Sailor Name</FormLabel>
+                <FormLabel className="font-bold">Boat ID</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Sailor Name" />
+                  <Input
+                    {...field}
+                    placeholder="Boat ID"
+                    type="number"
+                    disabled
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -149,25 +163,12 @@ export function UpdateSailor({
           />
           <FormField
             control={form.control}
-            name="rating"
+            name="days"
             render={({ field }) => (
               <FormItem className="min-w-[400px]">
-                <FormLabel className="font-bold">Rating</FormLabel>
+                <FormLabel className="font-bold">Day</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Rating" type="number" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="age"
-            render={({ field }) => (
-              <FormItem className="min-w-[400px]">
-                <FormLabel className="font-bold">Age</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder="Age" type="number" />
+                  <Input {...field} placeholder="MM/DD/YY" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
