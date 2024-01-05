@@ -5,7 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { TableType } from "@/types/type";
+import { type TableType } from "@/types/type";
 
 interface SelectMenuProps {
   value: TableType;

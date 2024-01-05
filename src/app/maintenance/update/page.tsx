@@ -80,9 +80,9 @@ export default function Page() {
                 <p className="text-md">
                   Days: {reserve.days}
                   <br />
-                  Sailor ID: {reserve.sailorId}
+                  Sailor ID: {reserve.sid}
                   <br />
-                  Boat ID:{reserve.boatId}
+                  Boat ID:{reserve.bid}
                 </p>
               </div>
             ))}

@@ -2,34 +2,80 @@
 
 import { api } from "@/trpc/react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { type boats, type reserves, type sailors } from "@prisma/client";
 import SelectMenu from "@/components/select-menu";
 import { type TableType } from "@/types/type";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useRouter, useSearchParams } from "next/navigation";
+import { toast } from "sonner";
 
 export default function Page() {
   const router = useRouter();
   const selectedTable = useSearchParams().get("table") as TableType;
-
   const [table, setTable] = useState<TableType>(selectedTable || "sailors");
+
+  const sailorQuery = api.database.selectSailor.useQuery();
+  const boatQuery = api.database.selectBoat.useQuery();
+  const reserveQuery = api.database.selectReserve.useQuery();
+
+  const deleteSailorMutation = api.database.deleteSailor.useMutation();
+  const deleteBoatMutation = api.database.deleteBoat.useMutation();
+  const deleteReserveMutation = api.database.deleteReserve.useMutation();
+
+  useEffect(() => {
+    setTable(selectedTable || "sailors");
+  }, [selectedTable]);
 
   const handleSelectChange = (newValue: TableType) => {
     setTable(newValue);
     router.replace(`/maintenance/delete?table=${newValue}`);
   };
 
-  let data;
+  const handleDelete = async ({ sid, bid }: { sid?: number; bid?: number }) => {
+    try {
+      toast.message("Deleting...");
+      if (table === "sailors" && sid) {
+        await deleteSailorMutation.mutateAsync({ sid });
+        await sailorQuery.refetch();
+      } else if (table === "boats" && bid) {
+        await deleteBoatMutation.mutateAsync({ bid });
+        await boatQuery.refetch();
+      } else if (table === "reserves" && sid && bid) {
+        await deleteReserveMutation.mutateAsync({ sid, bid });
+        await reserveQuery.refetch();
+      }
+      toast.success("Successfully deleted! 🎉");
+    } catch (error: unknown) {
+      console.error(error);
 
-  if (table === "sailors") {
-    data = api.database.selectSailor.useQuery();
-  } else if (table === "boats") {
-    data = api.database.selectBoat.useQuery();
-  } else {
-    data = api.database.selectReserve.useQuery();
-  }
+      const errorTitle = "Failed to delete! ❌";
+      let errorMessage = "Unknown error";
+
+      if (error instanceof Error) {
+        // Now that we've checked, we can safely access 'message' or other Error properties.
+        errorMessage = `Error: ${error.message}`;
+      }
+
+      toast.error(errorTitle, {
+        description: <p>{errorMessage}</p>,
+      });
+    }
+  };
+
+  const data = (() => {
+    switch (table) {
+      case "sailors":
+        return sailorQuery.data;
+      case "boats":
+        return boatQuery.data;
+      case "reserves":
+        return reserveQuery.data;
+      default:
+        return [];
+    }
+  })();
 
   return (
     <>
@@ -47,8 +93,11 @@ export default function Page() {
 
         {table === "sailors" && (
           <div className="grid grid-cols-3 items-center gap-2">
-            {(data.data as sailors[])?.map((sailor) => (
-              <div className=",oflex-row flex w-[300px] cursor-pointer items-center justify-between gap-2 rounded-md border p-3 transition-all duration-200 hover:scale-[1.03] hover:bg-red-600 active:scale-[0.97]">
+            {(data as sailors[])?.map((sailor) => (
+              <div
+                onClick={() => handleDelete({ sid: sailor.sid })}
+                className=",oflex-row flex w-[300px] cursor-pointer items-center justify-between gap-2 rounded-md border p-3 transition-all duration-200 hover:scale-[1.03] hover:bg-red-600 active:scale-[0.97]"
+              >
                 <p className="text-md">
                   Name: {sailor.sname}
                   <br /> Rating: {sailor.rating}
@@ -62,8 +111,11 @@ export default function Page() {
 
         {table === "boats" && (
           <div className="grid grid-cols-3 items-center gap-2">
-            {(data.data as boats[])?.map((boat) => (
-              <div className="cursor-pointer,o flex w-[300px] flex-row items-center justify-between gap-2 rounded-md border p-3 transition-all duration-200 hover:scale-[1.03] hover:bg-red-600 active:scale-[0.97]">
+            {(data as boats[])?.map((boat) => (
+              <div
+                onClick={() => handleDelete({ bid: boat.bid })}
+                className="cursor-pointer,o flex w-[300px] flex-row items-center justify-between gap-2 rounded-md border p-3 transition-all duration-200 hover:scale-[1.03] hover:bg-red-600 active:scale-[0.97]"
+              >
                 <p className="text-md">
                   {boat.bid} - {boat.bname} - {boat.color}
                 </p>
@@ -75,14 +127,22 @@ export default function Page() {
 
         {table === "reserves" && (
           <div className="grid grid-cols-3 items-center gap-2">
-            {(data.data as reserves[])?.map((reserve) => (
-              <div className="cursor-pointer,o flex w-[300px] flex-row items-center justify-between gap-2 rounded-md border p-3 transition-all duration-200 hover:scale-[1.03] hover:bg-red-600 active:scale-[0.97]">
+            {(data as reserves[])?.map((reserve) => (
+              <div
+                onClick={() =>
+                  handleDelete({
+                    sid: reserve.sid as number,
+                    bid: reserve.bid as number,
+                  })
+                }
+                className="cursor-pointer,o flex w-[300px] flex-row items-center justify-between gap-2 rounded-md border p-3 transition-all duration-200 hover:scale-[1.03] hover:bg-red-600 active:scale-[0.97]"
+              >
                 <p className="text-md">
                   Days: {reserve.days}
                   <br />
-                  Sailor ID: {reserve.sailorId}
+                  Sailor ID: {reserve.sid}
                   <br />
-                  Boat ID:{reserve.boatId}
+                  Boat ID:{reserve.bid}
                 </p>
               </div>
             ))}

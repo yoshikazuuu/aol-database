@@ -73,19 +73,19 @@ export const databaseRouter = createTRPCRouter({
 
   deleteSailor: publicProcedure
     .input(z.object({ sid: z.number() }))
-    .query(({ ctx, input }) => {
+    .mutation(({ ctx, input }) => {
       return ctx.db.$queryRaw`DELETE FROM sailors WHERE sid = ${input.sid}`;
     }),
 
   deleteBoat: publicProcedure
     .input(z.object({ bid: z.number() }))
-    .query(({ ctx, input }) => {
+    .mutation(({ ctx, input }) => {
       return ctx.db.$queryRaw`DELETE FROM boats WHERE bid = ${input.bid}`;
     }),
 
   deleteReserve: publicProcedure
     .input(z.object({ sid: z.number(), bid: z.number() }))
-    .query(({ ctx, input }) => {
+    .mutation(({ ctx, input }) => {
       return ctx.db
         .$queryRaw`DELETE FROM reserves WHERE sid = ${input.sid} AND bid = ${input.bid}`;
     }),

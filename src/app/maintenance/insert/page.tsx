@@ -1,9 +1,7 @@
 "use client";
 
-import { api } from "@/trpc/react";
-
 import { useState } from "react";
-import { type boats, type reserves, type sailors } from "@prisma/client";
+
 import SelectMenu from "@/components/select-menu";
 import { type TableType } from "@/types/type";
 import Link from "next/link";

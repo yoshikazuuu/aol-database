@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
     provider = "prisma-client-js"
 }
@@ -10,29 +7,28 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model sailors {
-    sid    Int    @id
-    sname  String
-    rating Int
-    age    Float
-
-    reserves reserves[]
-}
-
 model boats {
-    bid   Int    @id
-    bname String
-    color String
-
+    bid      Int        @id @default(autoincrement())
+    bname    String?
+    color    String?
     reserves reserves[]
 }
 
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model reserves {
-    sailorId Int
-    boatId   Int
-    days     String
-    sailors  sailors @relation(fields: [sailorId], references: [sid])
-    boats    boats   @relation(fields: [boatId], references: [bid])
+    sid     Int
+    bid     Int
+    days    String?
+    boats   boats   @relation(fields: [bid], references: [bid], onDelete: NoAction, onUpdate: NoAction)
+    sailors sailors @relation(fields: [sid], references: [sid], onDelete: NoAction, onUpdate: NoAction)
 
-    @@id([sailorId, boatId, days])
+    @@id([sid, bid])
+}
+
+model sailors {
+    sid      Int        @id @default(autoincrement())
+    sname    String?
+    rating   Int?
+    age      Float?
+    reserves reserves[]
 }
