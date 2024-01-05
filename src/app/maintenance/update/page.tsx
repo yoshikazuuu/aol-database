@@ -2,7 +2,7 @@
 
 import { api } from "@/trpc/react";
 
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { type boats, type reserves, type sailors } from "@prisma/client";
 import SelectMenu from "@/components/select-menu";
 import { type TableType } from "@/types/type";

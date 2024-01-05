@@ -49,9 +49,11 @@ export function UpdateReserve({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      sid: data.sid as number,
-      bid: data.bid as number,
-      days: data.days || "",
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      sid: data.sid,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      bid: data.bid,
+      days: data.days ?? "",
     },
     mode: "onChange",
   });

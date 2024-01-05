@@ -42,9 +42,9 @@ export function UpdateSailor({
     resolver: zodResolver(formSchema),
     defaultValues: {
       sid: data.sid,
-      sname: data.sname || "",
-      rating: data.rating || 0,
-      age: data.age || 0,
+      sname: data.sname ?? "",
+      rating: data.rating ?? 0,
+      age: data.age ?? 0,
     },
     mode: "onChange",
   });

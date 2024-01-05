@@ -140,8 +140,10 @@ export default function Page() {
                 key={index}
                 onClick={() =>
                   handleDelete({
-                    sid: reserve.sid as number,
-                    bid: reserve.bid as number,
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                    sid: reserve.sid,
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                    bid: reserve.bid,
                   })
                 }
                 className="cursor-pointer,o flex w-[300px] flex-row items-center justify-between gap-2 rounded-md border p-3 transition-all duration-200 hover:scale-[1.03] hover:bg-red-600 active:scale-[0.97]"

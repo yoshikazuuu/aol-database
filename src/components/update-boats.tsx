@@ -41,8 +41,8 @@ export function UpdateBoat({
     resolver: zodResolver(formSchema),
     defaultValues: {
       bid: data.bid,
-      bname: data.bname || "",
-      color: data.color || "",
+      bname: data.bname ?? "",
+      color: data.color ?? "",
     },
     mode: "onChange",
   });
